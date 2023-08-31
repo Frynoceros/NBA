@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  root to: 'nba/player#show', id: 'damian-lillard-2205'
+  namespace :nba do
+    resources :player, only: [:show]
+  end
+  get '/search/suggest', to: 'search#suggest'
 end

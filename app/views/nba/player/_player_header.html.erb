@@ -1,0 +1,58 @@
+<div class="w-full">
+  <div
+    class="flex flex-col md:flex-row md:justify-between sm:px-4 lg:px-8 pt-5"
+    style="
+      background-color: <%= @players_backgroundColor %>;
+      color: <%= @players_foregroundColor%>;">
+    <div class="flex flex-col items-center md:items-start md:justify-around">
+      <div>
+        <p
+          class="text-5xl font-bold"
+          style="color: <%= @players_foregroundColor%>"
+        >
+          <%= @player_data.dig('bio','usedName') %>
+        </p>
+        <div class="flex space-x-2 text-sm pt-2 justify-center md:justify-start">
+          <p><%= @player_data.dig('bio', "heightFeetInches") %>,</p>
+          <p><%= @player_data.dig('bio', "weightLbs") %></p>
+          <p>• <%= @player_data.dig('bio', 'team', 'nickname') %> •</p>
+          <p>
+            #<%= @player_data.dig('bio', "jerseyNumber") %> <%=
+            @player_data.dig('bio', "position") %>
+          </p>
+        </div>
+      </div>
+      <div class="hidden md:flex flex-col items-center">
+        <div class="flex space-x-3 text-sm text-center justify-center">
+          <% @player_data.dig('bio', 'statsSummary', 'stats').each do |stat| %>
+          <div>
+            <p><%= stat['label'] %></p>
+            <p class="text-3xl"><%= stat['value'] %></p>
+          </div>
+          <% end %>
+        </div>
+        <div class="flex space-x-2 text-sm text-center justify-center pt-2">
+          <p><%= @player_data.dig('bio', 'statsSummary', 'statsScope') %></p>
+        </div>
+      </div>
+    </div>
+    <img
+      class="self-center pt-4 md:pt-0 md:justify-self-end h-44 md:h-52"
+      src="<%= @player_image_url %>"
+      alt="image of player"
+    />
+    <div class="md:hidden flex flex-col items-center bg-white w-full py-4" style="color: <%= @players_backgroundColor%>;">
+      <div class="flex space-x-3 text-sm text-center justify-center">
+        <% @player_data.dig('bio', 'statsSummary', 'stats').each do |stat| %>
+        <div>
+          <p><%= stat['label'] %></p>
+          <p class="text-3xl"><%= stat['value'] %></p>
+        </div>
+        <% end %>
+      </div>
+      <div class="flex space-x-2 text-sm text-center justify-center">
+        <p><%= @player_data.dig('bio', 'statsSummary', 'statsScope') %></p>
+      </div>
+    </div>
+  </div>
+</div>

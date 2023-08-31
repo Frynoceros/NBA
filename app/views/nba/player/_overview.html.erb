@@ -1,0 +1,114 @@
+<div class="sm:px-4 lg:px-8">
+  <div class="flex py-4 font-bold text-2xl space-x-5">
+    <p>Overview</p>
+    <p>Stats</p>
+    <p>Game Log</p>
+    <p>Splits</p>
+    <p>Bio</p>
+  </div>
+  <div>
+    <p>
+      <% @player_data["bio"]["summaryNlg"].each do |section| %> <%=
+      section["text"] %> <% end %>
+    </p>
+  </div>
+  <div class="mt-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-base font-semibold leading-6" style="color: <%= @players_backgroundColor %>;">Stats</h1>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:flex-none">
+      <button type="button" class="block px-3 py-2 text-center text-sm font-semibold text-blue-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">See all</button>
+    </div>
+  </div>
+  <div class="flow-root">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead>
+            <tr class="rounded-xl" style="background-color: <%= @players_backgroundColor %>; color: <%= @players_foregroundColor%>;">
+              <th scope="col" class="rounded-l p-1.5 text-right text-sm font-normal text-gray-900"></th>
+              <% @players_stat_columns.each_with_index do |column, index|%>
+                <% next if index == 0 %>
+                  <th scope="col" class="p-1.5 text-right text-sm font-normal <%= 'rounded-r' if column == @players_stat_columns.last %>">
+                    <a href="#" class="group inline-flex">
+                      <%= column['rowItemKey']%>
+                    </a>
+                  </th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <% @players_stat_rows.each do |row| %>
+              <tr>
+                <% @players_stat_columns.each do |column| %>
+                  <td class="whitespace-nowrap p-1.5 text-sm font-medium text-gray-900 <%= column['rowItemKey'] == 'TIMEFRAME' ? 'text-left' : 'text-right' %>">
+                    <%= row[column["rowItemKey"]]["display"] %>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <% if @active_player.present? %>
+    <div class="sm:flex sm:items-center pt-8">
+      <div class="sm:flex-auto">
+        <h1 class="text-base font-semibold leading-6 text-gray-900" style="color: <%= @players_backgroundColor %>;">Recent Games</h1>
+      </div>
+      <div class="mt-4 sm:mt-0 sm:flex-none">
+        <button type="button" class="block px-3 py-2 text-center text-sm font-semibold text-blue-500 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">See all</button>
+      </div>
+    </div>
+    <div class="flow-root">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead>
+              <tr class="rounded-xl" style="background-color: <%= @players_backgroundColor %>; color: <%= @players_foregroundColor%>;">
+                <% @recent_games_columns.each_with_index do |column, index| %>
+                  <th scope="col" class="p-1.5 text-left text-sm font-normal <%= 'rounded-l' if index == 0 %> <%= 'rounded-r' if index == @recent_games_columns.length - 1 %>">
+                    <%= column['rowItemKey'] unless column['rowItemKey'] == 'ALIGNMENT' %>
+                  </th>
+                <% end %>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+
+              <% @recent_games_rows.each do |row| %>
+                <tr>
+                  <% @recent_games_columns.each do |column| %>
+                    <td class="whitespace-nowrap p-1.5 text-sm text-gray-900">
+                      <% if column['rowItemKey'] == 'OPP' %>
+                        <div class="flex px-4">
+                          <img class="h-4 w-4 object-contain mr-2.5"src="<%= row[column['rowItemKey']]['imageUrl'] %>" alt="<%= row[column['rowItemKey']]['display'] %>" />
+                          <%= row[column['rowItemKey']]['display'] %>
+                        </div>
+                      <% else %>
+                        <%= row[column['rowItemKey']]['display']%>
+                      <% end %>
+                    </td>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<div class="py-8">
+  <h3 class="text-base font-semibold leading-6 py-2" style="color: <%= @players_backgroundColor %>;">Gallery</h3>
+  <div class="flex flex-wrap gap-[3px] md:gap-1.5">
+    <% @player_images.each do |image|%>
+      <div class="h-[85px] w-[120px] md:h-[100px] md:w-[150px] flex justify-center items-end rounded-lg overflow-hidden " style="background-color: <%= image['colors']['backgroundColor'] %>;">
+      <img class="h-[90%]" src="<%= image['url'] %>" alt="Image">
+    </div>
+    <% end %>
+  </div>
+</div>
